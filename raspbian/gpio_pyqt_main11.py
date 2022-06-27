@@ -6,30 +6,32 @@ from PyQt5.QtCore import *
 import RPi.GPIO as GPIO
 import time
 
-BUTTON = 3
-RED = 11
+SERVO = 12
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(RED, GPIO.OUT)
-GPIO.setup(BUTTON, GPIO.IN)
+GPIO.setup(SERVO, GPIO.OUT)
+pwm = GPIO.PWM(SERVO,50)
+pwm.start(3.0)
 
 class MyApp(QWidget) :
+
     def __init__(self) :
         super().__init__()
         self.initUI()
 
     def initUI(self) :
-        self.setWindowTitle('RPi LED Control')
+        self.setWindowTitle('RPi SERVO CONTROL')
         # 윈도우 기본 설정
         self.setGeometry(100, 100, 300, 350)
 
         self.dial = QDial(self)
         self.dial.setRange(0,13)
+
+        self.label = QLabel(self)
         self.label.setFont(QFont('Arial', 15))
         self.label.setText("MOTOR CONTROL")
         self.label.setAlignment(Qt.AlignCenter) # 라벨 정중앙
      
-
         # 시그널 정의
         self.dial.valueChanged.connect(self.Dial_Changed)
 
@@ -40,7 +42,8 @@ class MyApp(QWidget) :
         self.show()
 
     def Dial_Changed(self):
-        self.label.setText(str(self, self.dial.value()))
+        self.label.setText(str(self.dial.value()))
+        pwm.ChangeDutyCycle(float(self.dial.value()))
 
 
 if __name__ == '__main__' :
