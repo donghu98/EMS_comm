@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/">
+    <file>UI/iot_64.png</file>
+  </qresource>
+</RCC>
