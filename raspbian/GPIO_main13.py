@@ -1,19 +1,20 @@
-from logging.handlers import DEFAULT_HTTP_LOGGING_PORT
-import Adafruit_DHT as dht
+# PAN test
+import RPi.GPIO as GPIO
 import time
 
-sensor = dht.DHT11
-PIN = 4 #GPIO.BCM mode 
+PAN = 13
 
-try: 
+GPIO.setmode(GPIO.BOARD) # 
+GPIO.setup(PAN, GPIO.OUT)
+
+try:
     while True:
-        (humid, temp) = dht.read_retry(sensor, PIN)
-        if humid is not None and temp is not None:
-            print(f'TEMP > {temp:.1f} C / Humidity > {humid:.1f}')
-        else:
-            print('Sensor error!')
+        GPIO.output(PAN, GPIO.HIGH)
+        time.sleep(5.0)
 
-        time.sleep(1.0) #1 second delay
+        GPIO.output(PAN, GPIO.LOW)
+        time.sleep(5.0)
 
 except KeyboardInterrupt:
-    print('End of program')
+    GPIO.cleanup()
+

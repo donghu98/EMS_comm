@@ -1,16 +1,18 @@
 <RCC>
   <qresource prefix="/">
-    <file>alarm.png</file>
+    <file alias="balarm">balarm_48.png</file>
+    <file alias="bstop">bstop_48.png</file>
+    <file alias="stop">stop_48.png</file>
     <file alias="green">green_24.png</file>
-    <file alias="red">red.png</file>
-    <file alias="mist">mist.png</file>
-    <file alias="humid">humid_128.png</file>
-    <file alias="iot">iot_64.png</file>
-    <file alias="pressure">pressure_128.png</file>
-    <file alias="rain">rain_64.png</file>
-    <file alias="sun">sun_64.png</file>
-    <file alias="temp64">temp_64.png</file>
+    <file alias="red">red_24.png</file>
+    <file alias="mist">mist_64.png</file>
+    <file alias="alarm">alarm_48.png</file>
     <file alias="temp">temp_128.png</file>
+    <file alias="humid">humid_128.png</file>
+    <file alias="clear">sun_64.png</file>
+    <file alias="clouds">cloud_64.png</file>
+    <file alias="rain">rain_64.png</file>
     <file alias="snow">snow_64.png</file>
+    <file alias="iot">iot_64.png</file>
   </qresource>
 </RCC>

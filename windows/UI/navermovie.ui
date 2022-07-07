@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>네이버 뉴스 검색</string>
+   <string>네이버 영화 검색</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
@@ -46,7 +46,7 @@
     </sizepolicy>
    </property>
    <property name="title">
-    <string>Search</string>
+    <string>영화제목 검색</string>
    </property>
    <widget class="QLabel" name="label">
     <property name="geometry">

@@ -1,4 +1,4 @@
-# 네이버검색용 UI실행
+# 네이버영화 UI실행
 import sys
 from PyQt5 import uic
 from PyQt5.QtWidgets import *
@@ -15,7 +15,7 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        uic.loadUi('./windows/ui/navernews.ui', self)
+        uic.loadUi('./windows/ui/navermovie.ui', self)
         self.setWindowIcon(QIcon('naver_icon.png'))
 
         # 시그널연결
@@ -26,7 +26,7 @@ class MyApp(QWidget):
     
     def tblResultSelected(self):
         selected = self.tblResult.currentRow() # 현재 선택된 열의 인덱스
-        url = self.tblResult.item(selected, 1).text()
+        url = self.tblResult.item(selected, 2).text()
         webbrowser.open(url) 
 
     def btnSearchClicked(self):
@@ -46,19 +46,22 @@ class MyApp(QWidget):
 
     def makeTable(self, result):
         self.tblResult.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.tblResult.setColumnCount(2)
+        self.tblResult.setColumnCount(3)
         self.tblResult.setRowCount(len(result)) # 50
-        self.tblResult.setHorizontalHeaderLabels(['기사제목', '뉴스링크'])
-        self.tblResult.setColumnWidth(0, 350)
+        self.tblResult.setHorizontalHeaderLabels(['영화제목', '상영년도', '영화링크'])
+        self.tblResult.setColumnWidth(0, 250)
         self.tblResult.setColumnWidth(1, 100)
+        self.tblResult.setColumnWidth(2, 100)
         self.tblResult.setEditTriggers(QAbstractItemView.NoEditTriggers) # readonly
         # 테이블위젯 설정
 
         i = 0
         for item in result: # 50번 반복
             title = self.strip_tag(item[0]['title'])
-            self.tblResult.setItem(i, 0, QTableWidgetItem(title))
-            self.tblResult.setItem(i, 1, QTableWidgetItem(item[0]['org_link']))
+            subtitle = item[0]['subtitle']
+            self.tblResult.setItem(i, 0, QTableWidgetItem(f'{title} / {subtitle}'))
+            self.tblResult.setItem(i, 1, QTableWidgetItem(item[0]['pubDate']))
+            self.tblResult.setItem(i, 2, QTableWidgetItem(item[0]['link']))
             i += 1
 
     def strip_tag(self, title):  # html tag 없애는 함수
@@ -73,17 +76,17 @@ class MyApp(QWidget):
     def getPostData(self, post):
         temp = []
         title = post['title']
-        description = post['description']
-        org_link = post['originallink']
         link = post['link']
+        subtitle = post['subtitle']
+        pubDate = post['pubDate']
 
-        temp.append({'title':title, 'description':description,
-                       'org_link':org_link, 'link':link})
+        temp.append({'title':title, 'subtitle':subtitle,
+                     'pubDate':pubDate, 'link':link})
         return temp
 
     # 핵심함수
     def getNaverSearch(self, keyword, search, start, display):
-        url = f'https://openapi.naver.com/v1/search/{keyword}.json' \
+        url = f'https://openapi.naver.com/v1/search/movie' \
               f'?query={quote(search)}&start={start}&display={display}'
         req = urllib.request.Request(url)
         # 인증추가

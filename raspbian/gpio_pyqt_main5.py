@@ -4,6 +4,16 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+import RPi.GPIO as GPIO
+import time
+
+BUTTON = 3
+RED = 11
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(BUTTON, GPIO.IN) 
+GPIO.setup(RED, GPIO.OUT) # 11핀 출력셋팅
+
 class MyApp(QWidget):
 
     def __init__(self):
@@ -40,9 +50,18 @@ class MyApp(QWidget):
 
     def btnOn_Clicked(self):
         self.label.setText('LED ON!!')
+        GPIO.output(RED, GPIO.HIGH) # on
 
     def btnOff_Clicked(self):
         self.label.setText('LED OFF')
+        GPIO.output(RED, GPIO.LOW) # off
+    
+    def closeEvent(self, QCloseEvent):
+        GPIO.output(RED, GPIO.LOW)
+        GPIO.cleanup()
+
+        self.deleteLater()
+        QCloseEvent.accept()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
